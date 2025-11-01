@@ -4,7 +4,7 @@ A bidding platform built with Next.js 15, PostgreSQL, and TypeScript.
 
 ## Demo
 
-![Biddy Demo](./Biddy.mp4)
+[![Biddy Demo](./Biddy.mp4)](https://github.com/user-attachments/assets/be8618d5-31da-4aea-b799-2bc9f1c7418a)
 
 ---
 
