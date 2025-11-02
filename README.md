@@ -161,84 +161,62 @@ For production deployments, implement:
 
 ---
 
-## Trade-offs and What I Would Do Different
+### Trade-offs and What I Would Do Different
 
-### Time Constraints (What's Missing)
+#### Time Constraints (What's Missing)
 
-#### 1. **Real-time Updates**
+1. **Real-time Updates**
+   - **Current:** Manual refresh via button or after actions  
+   - **Ideal:** WebSocket connections for live bid updates  
+   - **Why skipped:** Next.js Server Actions don't natively support WebSockets; would require Socket.io or Pusher integration  
+   - **Impact:** Users must refresh to see others' bids  
 
-**Current:** Manual refresh via button or after actions
+2. **Comprehensive Testing**
+   - **Current:** Manual testing only  
+   - **Ideal:**
+     - Unit tests (Vitest/Jest) for business logic  
+     - Integration tests (Playwright) for critical user flows  
+     - E2E tests for bid acceptance workflow  
+   - **Why skipped:** Time constraints  
+   - **Impact:** Potential regression bugs during refactoring  
 
-**Ideal:** WebSocket connections for live bid updates
+3. **Advanced Filtering & Search**
+   - **Current:** Client-side filtering, loads all data  
+   - **Ideal:**
+     - Server-side filtering with cursor pagination  
+     - Full-text search with PostgreSQL tsvector or Elasticsearch  
+     - Saved filters/search preferences  
+   - **Why skipped:** Complexity vs MVP requirements  
+   - **Impact:** Performance degrades with >1000 collections  
 
-**Why skipped:** Next.js Server Actions don't natively support WebSockets; would require Socket.io or Pusher integration
+4. **Bid Notifications**
+   - **Current:** Toast notifications only  
+   - **Ideal:**
+     - Email notifications on bid acceptance/rejection  
+     - In-app notification center  
+     - Push notifications for mobile  
+   - **Why skipped:** Requires email service setup (SendGrid/Resend)  
+   - **Impact:** Users may miss important updates  
 
-**Impact:** Users must refresh to see others' bids
+5. **Audit Logging**
+   - **Current:** No history tracking  
+   - **Ideal:**
+     - Complete audit trail (who did what, when)  
+     - Bid history with timestamps  
+     - Rollback capabilities  
+   - **Why skipped:** Additional database schema required  
+   - **Impact:** No accountability or debugging trail  
 
-#### 2. **Comprehensive Testing**
+6. **Image Uploads**
+   - **Current:** No images for collections  
+   - **Ideal:**
+     - Upload to S3/Cloudinary  
+     - Image optimization and CDN delivery  
+     - Gallery view  
+   - **Why skipped:** File upload infrastructure  
+   - **Impact:** Less engaging UX
 
-**Current:** Manual testing only
-
-**Ideal:**
-- Unit tests (Vitest/Jest) for business logic
-- Integration tests (Playwright) for critical user flows
-- E2E tests for bid acceptance workflow
-
-**Why skipped:** Time constraints
-
-**Impact:** Potential regression bugs during refactoring
-
-#### 3. **Advanced Filtering & Search**
-
-**Current:** Client-side filtering, loads all data
-
-**Ideal:**
-- Server-side filtering with cursor pagination
-- Full-text search with PostgreSQL tsvector or Elasticsearch
-- Saved filters/search preferences
-
-**Why skipped:** Complexity vs MVP requirements
-
-**Impact:** Performance degrades with >1000 collections
-
-#### 4. **Bid Notifications**
-
-**Current:** Toast notifications only
-
-**Ideal:**
-- Email notifications on bid acceptance/rejection
-- In-app notification center
-- Push notifications for mobile
-
-**Why skipped:** Requires email service setup (SendGrid/Resend)
-
-**Impact:** Users may miss important updates
-
-#### 5. **Audit Logging**
-
-**Current:** No history tracking
-
-**Ideal:**
-- Complete audit trail (who did what, when)
-- Bid history with timestamps
-- Rollback capabilities
-
-**Why skipped:** Additional database schema required
-
-**Impact:** No accountability or debugging trail
-
-#### 6. **Image Uploads**
-
-**Current:** No images for collections
-
-**Ideal:**
-- Upload to S3/Cloudinary
-- Image optimization and CDN delivery
-- Gallery view
-
-**Why skipped:** File upload infrastructure
-
-**Impact:** Less engaging UX
+---
 
 ### Architectural Choices
 
